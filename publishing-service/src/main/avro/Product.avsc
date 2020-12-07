@@ -17,7 +17,7 @@
       ]
     } },
     { "name": "deliveryPromise", "type": {
-        "type": "enum", "name": "DeliveryPromise", "symbols" : [ "AVAILABLE", "NOT_AVAILABLE", "SOLD_OUT", "PREORDER" ]
+        "type": "enum", "name": "DeliveryPromise", "symbols" : [ "AVAILABLE", "NOT_AVAILABLE", "SOLD_OUT", "PREORDER", "UNKNOWN" ]
       } },
     { "name": "color", "type": [ "null", { "type": "enum", "name": "Color", "type": "enum", "symbols" : [ "BLACK", "WHITE", "RED", "GREEN", "BLUE", "CYAN", "MAGENTA", "YELLOW" ] } ], "default": null },
     { "name": "size", "type": [ "null", "int" ], "default": null }
