@@ -1,0 +1,43 @@
+version: 2.1
+
+references:
+  sbt_image: &sbt_image
+               hseeberger/scala-sbt:graalvm-ce-20.3.0-java11_1.4.5_2.13.4 # hseeberger/scala-sbt:11.0.9.1_1.4.5_2.13.4
+
+jobs:
+  test:
+    docker:
+      - image: *sbt_image
+    resource_class: medium
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - publishing-service-{{ checksum "publishing-service/project/plugins.sbt" }}-{{ checksum "publishing-service/build.sbt" }}
+            - publishing-service-{{ checksum "publishing-service/project/plugins.sbt" }}
+            - publishing-service
+      - run:
+          name: Compile and Test Units
+          command: |
+            cd publishing-service
+            sbt -no-colors -batch "; compile; test"
+      - save_cache:
+          key: publishing-service-{{ checksum "publishing-service/project/plugins.sbt" }}-{{ checksum "publishing-service/build.sbt" }}
+          paths:
+            - ~/.m2
+            - ~/.ivy2
+            - ~/.sbt
+
+workflows:
+  version: 2
+
+  # This workflow is executed for PR branches
+  test_branch:
+    jobs:
+      - test:
+          filters:
+            branches:
+              ignore:
+                - master
+            tags:
+              ignore: /.*/
