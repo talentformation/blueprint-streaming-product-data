@@ -2,7 +2,7 @@ version: 2.1
 
 references:
   sbt_image: &sbt_image
-               hseeberger/scala-sbt:graalvm-ce-20.3.0-java11_1.4.5_2.13.4 # hseeberger/scala-sbt:11.0.9.1_1.4.5_2.13.4
+               hseeberger/scala-sbt:graalvm-ce-20.3.0-java11_1.4.5_2.13.4
 
 jobs:
   test:
@@ -27,7 +27,6 @@ jobs:
           paths:
             - ~/.m2
             - ~/.ivy2
-            - ~/.sbt
 
 workflows:
   version: 2
