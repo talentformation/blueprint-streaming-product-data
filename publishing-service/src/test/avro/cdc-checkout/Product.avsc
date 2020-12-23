@@ -1,0 +1,8 @@
+{
+  "type": "record",
+  "name": "Product",
+  "fields" : [
+    { "name": "ean", "type": "string", "aliases": [ "gtin" ] },
+    { "name": "title", "type": [ "null", "string" ], "default": null }
+  ]
+}

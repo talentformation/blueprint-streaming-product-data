@@ -1,0 +1,8 @@
+{
+  "type": "record",
+  "name": "Product",
+  "fields" : [
+    { "name": "gtin", "type": "string" },
+    { "name": "title", "type": "string" }
+  ]
+}
