@@ -11,7 +11,6 @@ jobs:
     parameters:
       sbt-project-folder:
         type: string
-    resource_class: medium
     steps:
       - checkout
       - restore_cache:
@@ -35,7 +34,11 @@ workflows:
   test_branch:
     jobs:
       - test:
-          sbt-project-folder: publishing-service
+          matrix:
+            parameters:
+              sbt-project-folder:
+                - publishing-service
+                - importer-service
           filters:
             branches:
               ignore:
