@@ -8,21 +8,22 @@ jobs:
   test:
     docker:
       - image: *sbt_image
+    parameters:
+      sbt-project-folder:
+        type: string
     resource_class: medium
     steps:
       - checkout
       - restore_cache:
           keys:
-            - publishing-service-{{ checksum "publishing-service/project/plugins.sbt" }}-{{ checksum "publishing-service/build.sbt" }}
-            - publishing-service-{{ checksum "publishing-service/project/plugins.sbt" }}
-            - publishing-service
+            - sbt-dependencies-{{ checksum "<< parameters.sbt-project-folder >>/build.sbt" }}
       - run:
           name: Compile and Test Units
           command: |
-            cd publishing-service
+            cd << parameters.sbt-project-folder >>
             sbt -no-colors -batch "; compile; test"
       - save_cache:
-          key: publishing-service-{{ checksum "publishing-service/project/plugins.sbt" }}-{{ checksum "publishing-service/build.sbt" }}
+          key: sbt-dependencies-{{ checksum "<< parameters.sbt-project-folder >>/build.sbt" }}
           paths:
             - ~/.m2
             - ~/.ivy2
@@ -35,6 +36,7 @@ workflows:
   test_branch:
     jobs:
       - test:
+          sbt-project-folder: publishing-service
           filters:
             branches:
               ignore:
