@@ -2,31 +2,30 @@ version: 2.1
 
 references:
   sbt_image: &sbt_image
-               hseeberger/scala-sbt:graalvm-ce-20.3.0-java11_1.4.5_2.13.4 # hseeberger/scala-sbt:11.0.9.1_1.4.5_2.13.4
+               hseeberger/scala-sbt:graalvm-ce-20.0.0-java8_1.3.10_2.13.1
 
 jobs:
   test:
     docker:
       - image: *sbt_image
-    resource_class: medium
+    parameters:
+      sbt-project-folder:
+        type: string
     steps:
       - checkout
       - restore_cache:
           keys:
-            - publishing-service-{{ checksum "publishing-service/project/plugins.sbt" }}-{{ checksum "publishing-service/build.sbt" }}
-            - publishing-service-{{ checksum "publishing-service/project/plugins.sbt" }}
-            - publishing-service
+            - sbt-dependencies-{{ checksum "<< parameters.sbt-project-folder >>/build.sbt" }}
       - run:
           name: Compile and Test Units
           command: |
-            cd publishing-service
+            cd << parameters.sbt-project-folder >>
             sbt -no-colors -batch "; compile; test"
       - save_cache:
-          key: publishing-service-{{ checksum "publishing-service/project/plugins.sbt" }}-{{ checksum "publishing-service/build.sbt" }}
+          key: sbt-dependencies-{{ checksum "<< parameters.sbt-project-folder >>/build.sbt" }}
           paths:
             - ~/.m2
             - ~/.ivy2
-            - ~/.sbt
 
 workflows:
   version: 2
@@ -35,6 +34,11 @@ workflows:
   test_branch:
     jobs:
       - test:
+          matrix:
+            parameters:
+              sbt-project-folder:
+                - publishing-service
+                - importer-service
           filters:
             branches:
               ignore:
