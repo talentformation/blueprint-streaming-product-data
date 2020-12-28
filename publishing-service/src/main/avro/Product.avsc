@@ -6,7 +6,6 @@
     { "name": "gtin", "type": "string" },
     { "name": "name", "type": "string" },
     { "name": "alternateName", "type": [ "null", "string" ], "default": null },
-    { "name": "brand", "type": "string" },
     { "name": "description", "type": "string" },
     { "name": "price", "type": {
       "type": "record",
