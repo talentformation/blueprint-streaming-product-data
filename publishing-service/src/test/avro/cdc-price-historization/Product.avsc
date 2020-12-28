@@ -1,8 +1,16 @@
 {
   "type": "record",
   "name": "Product",
-  "fields" : [
-    { "name": "gtin", "type": "string" },
-    { "name": "pimIdentifier", "type": [ "null", "string" ], "default": null }
+  "namespace": "product",
+  "fields": [
+    { "name": "ean", "type": "string", "aliases": [ "gtin" ] },
+    { "name": "price", "type": {
+      "type": "record",
+      "name": "Price",
+      "fields": [
+        { "name": "amount", "type": "bytes", "logicalType": "decimal", "precision": 8, "scale": 2 },
+        { "name": "vat", "type": "bytes", "logicalType": "decimal", "precision": 4, "scale": 2 }
+      ]
+    } }
   ]
 }

@@ -1,8 +1,24 @@
 {
   "type": "record",
   "name": "Product",
-  "fields" : [
-    { "name": "ean", "type": "string", "aliases": [ "gtin" ] },
-    { "name": "title", "type": [ "null", "string" ], "default": null }
+  "namespace": "product",
+  "fields": [
+    { "name": "gtin", "type": "string" },
+    { "name": "name", "type": "string" },
+    { "name": "alternateName", "type": [ "null", "string" ], "default": null },
+    { "name": "description", "type": "string" },
+    { "name": "price", "type": {
+      "type": "record",
+      "name": "Price",
+      "fields": [
+        { "name": "amount", "type": "bytes", "logicalType": "decimal", "precision": 8, "scale": 2 },
+        { "name": "vat", "type": "bytes", "logicalType": "decimal", "precision": 4, "scale": 2 }
+      ]
+    } },
+    { "name": "deliveryPromise", "type": {
+        "type": "enum", "name": "DeliveryPromise", "symbols" : [ "AVAILABLE", "NOT_AVAILABLE", "SOLD_OUT", "PREORDER" ]
+      } },
+    { "name": "color", "type": [ "null", { "type": "enum", "name": "Color", "type": "enum", "symbols" : [ "BLACK", "WHITE", "RED", "GREEN", "BLUE", "CYAN", "MAGENTA", "YELLOW" ] } ], "default": null },
+    { "name": "size", "type": [ "null", "int" ], "default": null }
   ]
 }
